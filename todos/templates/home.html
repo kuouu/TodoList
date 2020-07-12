@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card mt-3 create-todo">
+    <div class="card-body" data-toggle="modal" data-target="#createField">
+        <span class="fa fa-plus mr-3"></span>
+        <span class="card-text text-muted">Create new todo...</span>
+    </div>
+</div>
+<!-- New Modal -->
+<div class="modal fade" id="createField" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="{{url_for('new')}}" method="POST" class="modal-content">
+            <div class="modal-header">
+                <input type="text" class="modal-title input-title h5" id="exampleModalLongTitle" style="width: 100%;"
+                    name="title" placeholder="title" required="required">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="textarea" class="input-content modal-body" name="content" placeholder="content"
+                    onkeydown="return event.key != 'Enter';">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="" method="POST">
+                    <input type="submit" class="btn btn-info text-white" value="Create"></input>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% for todo in todolist %}
+<div class="card mt-3">
+    <div class="card-body">
+        <a href="delete/{{ todo.id }}" class="fa fa-trash delete-btn" data-toggle="modal"
+            data-target="#deleteField{{ todo.id }}"></a>
+        <a href="edit/{{ todo.id }}" class="card-title todo-title h5" data-toggle="modal"
+            data-target="#editField{{ todo.id }}">{{ todo.title }}</a>
+        <p class="card-text">{{ todo.content }}</p>
+        <!-- <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a> -->
+    </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editField{{ todo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="{{url_for('edit', todo_id=todo.id)}}" method="POST" class="modal-content">
+            <div class="modal-header">
+                <input type="text" class="modal-title input-title h5" id="exampleModalLongTitle" style="width: 100%;"
+                    name="title" value="{{todo.title}}" placeholder="title" required="required">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="textarea" class="input-content modal-body" name="content" value="{{todo.content}}"
+                    placeholder="content">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="" method="POST">
+                    <input type="submit" class="btn btn-info text-white" value="Edit"></input>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteField{{ todo.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sure to delete?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{url_for('delete', todo_id=todo.id)}}" method="POST">
+                    <input type="submit" class="btn btn-danger text-white" value="Delete"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}

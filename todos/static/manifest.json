@@ -1,0 +1,6 @@
+{
+    "name": "Todo List",
+    "short_name": "TodoList",
+    "display": "standalone",
+    "orientation": "portrait-primary"
+}
